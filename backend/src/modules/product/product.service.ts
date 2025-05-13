@@ -21,8 +21,9 @@ export class ProductService {
       throw error;
     }
   }
-  findAll() {
-     return this.productModel.find().then((users) => users.map(productResponse));
+  async findAll() {
+     const users = await this.productModel.find();
+    return users.map(productResponse);
    }
  
    async findOne(id: string) {
