@@ -1,0 +1,20 @@
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { Document } from 'mongoose';
+import { User } from '../user/user.schema';
+
+export type ProfileDocument = Profile & Document;
+
+@Schema()
+export class Profile {
+
+  @Prop({ required: true })
+  bio: string;
+
+  @Prop()
+  avatar: string;
+
+ @Prop({ type: Number, enum: [0, 1], default: 0 })
+  role: number;
+}
+
+export const ProfileSchema = SchemaFactory.createForClass(Profile);

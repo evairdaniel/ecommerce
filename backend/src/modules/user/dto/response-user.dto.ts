@@ -9,4 +9,11 @@ export class ResponseUserDto {
 
   @ApiProperty()
   email: string;
+
+  @ApiProperty()
+  profile: {
+    bio: string;
+    avatar: string;
+    role: number;
+  };
 }

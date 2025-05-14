@@ -9,31 +9,46 @@ import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { userResponse } from 'src/Common/utils/response-user';
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
+import { Profile, ProfileDocument } from '../profile/profile.schema';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectModel(Profile.name) private profileModel: Model<ProfileDocument>, ) {}
 
   async create(dto: CreateUserDto) {
-    try {
+  
+    const existingUser = await this.userModel.findOne({ email: dto.email });
+
+    if (existingUser) {
+      throw new BadRequestException('E-mail já está em uso');
+    }
+
       const user = new this.userModel(dto);
+
+      if(dto.profileId){
+        const existProfile = await this.profileModel.findOne({ _id: dto.profileId });
+        user.profile = existProfile;
+      }
+
       await user.save();
       return userResponse(user);
-    } catch (error) {
-      if (error.code === 11000) {
-        throw new BadRequestException('E-mail já está em uso');
-      }
-      throw error;
-    }
+    
   }
 
-  findAll() {
-    return this.userModel.find().then((users) => users.map(userResponse));
+  async findAll() {
+    const users = await this.userModel
+      .find()
+      .populate('profile');
+     return users.map(userResponse);
   }
 
   async findOne(id: string) {
-    const user = await this.userModel.findById(id);
+     const user = await this.userModel
+      .findById(id)
+      .populate('profile'); 
 
     if (!user) {
       throw new NotFoundException('Usuário não encontrado');
@@ -44,6 +59,7 @@ export class UserService {
 
   async update(id: string, dto: UpdateUserDto) {
     const user = await this.userModel.findById(id);
+
     if (!user) {
       throw new NotFoundException('Usuário não encontrado');
     }
@@ -55,17 +71,35 @@ export class UserService {
       user.password = await bcrypt.hash(dto.password, 10);
     }
 
+    if (dto.profileId) {
+      const existProfile = await this.profileModel.findOne({ _id: dto.profileId });
+      console.log('profile', existProfile);
+      user.profile =existProfile;
+    }
+    console.log('antes', user);
+    
     await user.save();
-
+    console.log('depois', user);
     return userResponse(user);
   }
 
-   async remove(id: string) {
+  async remove(id: string) {
     const user = await this.userModel.findByIdAndDelete(id);
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
     return userResponse(user);
   }
 
-  findByEmail(email: string) {
-    return this.userModel.findOne({ email });
+  async findByEmail(email: string) {
+    const user = await this.userModel
+      .findOne({ email })
+      .populate('profile');
+
+      if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+
+    return user;
   }
 }

@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { Profile } from '../profile/profile.schema';
 
 export type UserDocument = User & Document;
 
@@ -14,6 +15,9 @@ export class User {
 
   @Prop({ required: true })
   password: string;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Profile'})
+  profile?: Profile;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

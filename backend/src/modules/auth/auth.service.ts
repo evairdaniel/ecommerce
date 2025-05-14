@@ -23,7 +23,7 @@ export class AuthService {
       throw new UnauthorizedException('E-mail ou senha inválidos');
     }
 
-    const payload = { sub: user._id, email: user.email };
+    const payload = { sub: user.id, email: user.email};
     const token = this.jwtService.sign(payload);
 
     return {
