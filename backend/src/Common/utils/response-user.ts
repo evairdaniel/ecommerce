@@ -7,6 +7,7 @@ export function userResponse(user: any): ResponseUserDto {
     name: user.name,
     email: user.email,
     profile: user.profile ? {
+      profileId: user.profile.id,
       bio: user.profile.bio,
       avatar: user.profile.avatar,
       role: user.profile.role,

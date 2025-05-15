@@ -9,46 +9,46 @@ import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { userResponse } from 'src/Common/utils/response-user';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { Profile, ProfileDocument } from '../profile/profile.schema';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
-    @InjectModel(Profile.name) private profileModel: Model<ProfileDocument>, ) {}
+    @InjectModel(Profile.name) private profileModel: Model<ProfileDocument>,) { }
 
   async create(dto: CreateUserDto) {
-  
+
     const existingUser = await this.userModel.findOne({ email: dto.email });
 
     if (existingUser) {
       throw new BadRequestException('E-mail já está em uso');
     }
 
-      const user = new this.userModel(dto);
+    const user = new this.userModel(dto);
 
-      if(dto.profileId){
-        const existProfile = await this.profileModel.findOne({ _id: dto.profileId });
-        user.profile = existProfile;
-      }
+    if (dto.profileId) {
+      const existProfile = await this.profileModel.findOne({ _id: dto.profileId });
+      user.profile = existProfile;
+    }
 
-      await user.save();
-      return userResponse(user);
-    
+    await user.save();
+    return userResponse(user);
+
   }
 
   async findAll() {
     const users = await this.userModel
       .find()
       .populate('profile');
-     return users.map(userResponse);
+    return users.map(userResponse);
   }
 
   async findOne(id: string) {
-     const user = await this.userModel
+    const user = await this.userModel
       .findById(id)
-      .populate('profile'); 
+      .populate('profile');
 
     if (!user) {
       throw new NotFoundException('Usuário não encontrado');
@@ -68,18 +68,14 @@ export class UserService {
     user.email = dto.email || user.email;
 
     if (dto.password) {
-      user.password = await bcrypt.hash(dto.password, 10);
+      user.password = dto.password;
     }
 
     if (dto.profileId) {
       const existProfile = await this.profileModel.findOne({ _id: dto.profileId });
-      console.log('profile', existProfile);
-      user.profile =existProfile;
+      user.profile = existProfile;
     }
-    console.log('antes', user);
-    
     await user.save();
-    console.log('depois', user);
     return userResponse(user);
   }
 
@@ -96,7 +92,7 @@ export class UserService {
       .findOne({ email })
       .populate('profile');
 
-      if (!user) {
+    if (!user) {
       throw new NotFoundException('Usuário não encontrado');
     }
 

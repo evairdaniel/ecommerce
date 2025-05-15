@@ -10,7 +10,7 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async login(email: string, password: string): Promise<ResponseLoginDto> {
     const user = await this.userService.findByEmail(email);
@@ -23,7 +23,7 @@ export class AuthService {
       throw new UnauthorizedException('E-mail ou senha inválidos');
     }
 
-    const payload = { sub: user.id, email: user.email};
+    const payload = { sub: user.id, email: user.email };
     const token = this.jwtService.sign(payload);
 
     return {

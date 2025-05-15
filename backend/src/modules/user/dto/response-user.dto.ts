@@ -12,6 +12,7 @@ export class ResponseUserDto {
 
   @ApiProperty()
   profile: {
+    profileId: string
     bio: string;
     avatar: string;
     role: number;
