@@ -1,24 +1,26 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export const removeCurrency = (value: string) => {
+  return value?.replace(/[^\d]/g, '');
+};
+export const formatCurrency = (value: string | number) => {
+  const cleaned = value.toString().replace(/\D/g, '')
+  const numericValue = Number(cleaned)
 
-export function formatCurrency(value: string) {
+  if (!numericValue) return 'R$ 0,00';
 
-  const valueNumeric = value.replace(/\D/g, '');
+  const formatted = (numericValue / 100).toFixed(2);
 
-  const float = parseFloat(valueNumeric) / 100;
-
-  if (isNaN(float)) return '';
-
-  return float.toLocaleString('pt-BR', {
+  return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
-    currency: 'BRL',
-  });
-}
+    currency: 'BRL'
+  }).format(Number(formatted));
+};
 
 export function toBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {

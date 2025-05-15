@@ -6,6 +6,6 @@ export function profileResponse(profile: ProfileDocument): ResponseProfileDto {
     id: profile._id.toString(),
     bio: profile.bio,
     avatar: profile.avatar,
-    role: profile.role
+    role: profile.role,
   };
 }

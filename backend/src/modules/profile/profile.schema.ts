@@ -5,8 +5,7 @@ export type ProfileDocument = Profile & Document;
 
 @Schema()
 export class Profile {
-
-  @Prop({ required: true })
+  @Prop()
   bio: string;
 
   @Prop()

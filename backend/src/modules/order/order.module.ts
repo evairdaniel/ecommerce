@@ -8,12 +8,12 @@ import { Product, ProductSchema } from '../product/product.schema';
 
 @Module({
   imports: [
-         MongooseModule.forFeature([
+    MongooseModule.forFeature([
       { name: Order.name, schema: OrderSchema },
       { name: OrderProduct.name, schema: OrderProductSchema },
       { name: Product.name, schema: ProductSchema },
     ]),
-      ],
+  ],
   controllers: [OrderController],
   providers: [OrderService],
   exports: [OrderService],

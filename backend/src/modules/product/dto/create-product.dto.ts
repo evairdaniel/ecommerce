@@ -1,8 +1,7 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty } from 'class-validator';
 
-export class CreateProductDto 
-{
+export class CreateProductDto {
   @ApiProperty({
     example: 'Notebook',
     description: 'Nome do produto',
@@ -10,7 +9,7 @@ export class CreateProductDto
   @IsNotEmpty()
   name: string;
 
-   @ApiProperty({
+  @ApiProperty({
     example: '1200.00',
     description: '1200.00',
   })

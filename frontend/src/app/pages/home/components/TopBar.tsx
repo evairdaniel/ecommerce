@@ -4,7 +4,7 @@ import { useAuth } from "@/app/provider/authProvider"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { LogOut, PackagePlus, ShoppingBag, ShoppingCart, UserCog } from "lucide-react"
+import { LogOut, PackagePlus, ShoppingBag, ShoppingCart, User, UserCog } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
 export default function TopBar() {
@@ -61,7 +61,18 @@ export default function TopBar() {
                   <PackagePlus className="h-4 w-4" />
                   Cadastro de Produto
                 </Button>
-              )}
+              ) &&
+                (
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start gap-2"
+                    onClick={() => navigate("/users")}
+                  >
+                    <User className="w-4 h-4" />
+                    Usuários
+                  </Button>
+                )
+              }
 
               <Button
                 variant="ghost"
@@ -69,7 +80,7 @@ export default function TopBar() {
                 onClick={() => navigate("/orders")}
               >
                 <ShoppingBag className="w-4 h-4" />
-                Meus pedidos
+                {user.profile.role === 0 ? "Meus pedidos" : "Pedidos"}
               </Button>
               <Button
                 variant="ghost"

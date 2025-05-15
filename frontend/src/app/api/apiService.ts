@@ -55,12 +55,42 @@ export const createOrder = async (data: CreateOrderDto) => {
   }
 }
 
-export const fetchOrders = async (userId: string) => {
+export const fetchOrders = async () => {
+  try {
+    const response = await api.get(`/orders`);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao buscar pedidos', error);
+    throw error;
+  }
+}
+
+export const fetchUsers = async () => {
+  try {
+    const response = await api.get(`/users`);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao buscar usuários', error);
+    throw error;
+  }
+}
+
+export const fetchUser = async (userId?: string) => {
+  try {
+    const response = await api.get(`/users/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao buscar usuário', error);
+    throw error;
+  }
+}
+
+export const fetchOrder = async (userId: string) => {
   try {
     const response = await api.get(`/orders/user/${userId}`);
     return response.data;
   } catch (error) {
-    console.error('Erro ao buscar pedidos', error);
+    console.error('Erro ao buscar pedido', error);
     throw error;
   }
 }

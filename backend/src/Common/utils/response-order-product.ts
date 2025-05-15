@@ -1,7 +1,7 @@
 import { ResponseOrderDto } from 'src/modules/order/dto/response-order.dto';
 
-export function productOrderResponse(order: any): ResponseOrderDto  {
-   const products = order.products.map((op: any) => ({
+export function productOrderResponse(order: any): ResponseOrderDto {
+  const products = order.products.map((op: any) => ({
     productId: op.product._id,
     productName: op.product.name,
     unitPrice: op.price,
@@ -9,7 +9,7 @@ export function productOrderResponse(order: any): ResponseOrderDto  {
     total: op.price * op.quantity,
   }));
 
- return {
+  return {
     orderId: order._id,
     userId: order.user._id,
     userName: order.user.name,

@@ -7,13 +7,15 @@ export type OrderDocument = Order & Document;
 
 @Schema()
 export class Order {
-   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
   user: User;
 
   @Prop({ required: true })
   total: number;
 
-  @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'OrderProduct' }] })
+  @Prop({
+    type: [{ type: MongooseSchema.Types.ObjectId, ref: 'OrderProduct' }],
+  })
   products: OrderProduct[];
 }
 

@@ -5,6 +5,7 @@ import { useCart } from "@/app/provider/cartProvider"
 import FallbackImage from "@/components/FallbackImage"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { formatCurrency } from "@/lib/utils"
 import { useCallback, useState } from "react"
 
 type ProductListProps = {
@@ -60,7 +61,7 @@ export default function ProductList({ products }: ProductListProps) {
             <div className="flex justify-between items-center">
               <div>
                 <h2 className="text-lg font-semibold text-gray-800">{product.name}</h2>
-                <p className="text-blue-600 font-bold text-sm">R$ {product.price.toFixed(2)}</p>
+                <p className="text-blue-600 font-bold text-sm">{formatCurrency(product.price)}</p>
               </div>
               <div>
                 <Button className="bg-blue-600 cursor-pointer" onClick={() => addProduct(product)}>Adicionar ao carrinho</Button>

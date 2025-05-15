@@ -6,6 +6,8 @@ import OrdersPage from "../pages/orders"
 import ProductPage from "../pages/product"
 import ProfilePage from "../pages/profile"
 import RegisterPage from "../pages/register"
+import UsersPage from "../pages/users"
+import UserProfilePage from "../pages/users/[id]"
 import { ProtectedRoute } from "./ProtectedRoute"
 
 const Routes = () => {
@@ -60,6 +62,19 @@ const Routes = () => {
         {
           path: "",
           element: <ProductPage />
+        }
+      ]
+    }, {
+      path: "/users",
+      element: <ProtectedRoute />,
+      children: [
+        {
+          path: "",
+          element: <UsersPage />
+        },
+        {
+          path: ":id",
+          element: <UserProfilePage />
         }
       ]
     },

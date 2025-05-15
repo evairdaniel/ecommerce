@@ -8,7 +8,9 @@ import { profileResponse } from 'src/Common/utils/response-profile';
 
 @Injectable()
 export class ProfileService {
-  constructor(@InjectModel(Profile.name) private profileModel: Model<ProfileDocument>) {}
+  constructor(
+    @InjectModel(Profile.name) private profileModel: Model<ProfileDocument>,
+  ) {}
 
   async create(dto: CreateProfileDto) {
     const profile = new this.profileModel(dto);
@@ -17,8 +19,7 @@ export class ProfileService {
   }
 
   async findOne(id: string) {
-     const profile = await this.profileModel
-      .findById(id)
+    const profile = await this.profileModel.findById(id);
 
     if (!profile) {
       throw new NotFoundException('Perfil não encontrado');
@@ -44,9 +45,9 @@ export class ProfileService {
 
   async remove(id: string) {
     const profile = await this.profileModel.findByIdAndDelete(id);
-       if (!profile) {
-         throw new NotFoundException('Perfil não encontrado');
-       }
-       return profileResponse(profile);
+    if (!profile) {
+      throw new NotFoundException('Perfil não encontrado');
+    }
+    return profileResponse(profile);
   }
 }

@@ -6,6 +6,6 @@ export function productResponse(product: ProductDocument): ResponseProductDto {
     id: product._id.toString(),
     name: product.name,
     price: product.price,
-    quantity: product.quantity
+    quantity: product.quantity,
   };
 }

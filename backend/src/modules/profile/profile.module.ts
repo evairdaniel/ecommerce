@@ -5,9 +5,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Profile, ProfileSchema } from './profile.schema';
 
 @Module({
-   imports: [
-      MongooseModule.forFeature([{ name: Profile.name, schema: ProfileSchema }]),
-    ],
+  imports: [
+    MongooseModule.forFeature([{ name: Profile.name, schema: ProfileSchema }]),
+  ],
   controllers: [ProfileController],
   providers: [ProfileService],
   exports: [ProfileService],

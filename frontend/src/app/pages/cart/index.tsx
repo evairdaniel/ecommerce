@@ -5,6 +5,7 @@ import FallbackImage from "@/components/FallbackImage"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import { formatCurrency } from "@/lib/utils"
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { toast } from "sonner"
@@ -70,8 +71,8 @@ export default function CartPage() {
                             <h3 className="font-medium">{product.name}</h3>
                           </div>
                           <div className="text-right">
-                            <div className="font-medium">R$ {(product.price * product.quantity).toFixed(2)}</div>
-                            <div className="text-sm text-muted-foreground">R$ {product.price.toFixed(2)} cada</div>
+                            <div className="font-medium">{formatCurrency((product.price * product.quantity))}</div>
+                            <div className="text-sm text-muted-foreground">{formatCurrency(product.price)} cada</div>
                           </div>
                         </div>
                         <div className="flex justify-between items-center mt-4">
@@ -123,12 +124,12 @@ export default function CartPage() {
                 <div className="space-y-4">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Subtotal</span>
-                    <span>R$ {calcularSubtotal().toFixed(2)}</span>
+                    <span>{formatCurrency(calcularSubtotal())}</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between font-bold">
                     <span>Total</span>
-                    <span>R$ {calcularTotal().toFixed(2)}</span>
+                    <span>{formatCurrency(calcularTotal())}</span>
                   </div>
                   <Button className="w-full mt-4" size="lg" onClick={handleFinalizeOrder}>
                     Finalizar Compra

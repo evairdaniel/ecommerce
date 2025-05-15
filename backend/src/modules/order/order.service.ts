@@ -12,8 +12,10 @@ import { productOrderResponse } from 'src/Common/utils/response-order-product';
 export class OrderService {
   constructor(
     @InjectModel(Order.name) private readonly orderModel: Model<OrderDocument>,
-    @InjectModel(OrderProduct.name) private readonly orderProductModel: Model<OrderProductDocument>,
-    @InjectModel(Product.name) private readonly productModel: Model<ProductDocument>,
+    @InjectModel(OrderProduct.name)
+    private readonly orderProductModel: Model<OrderProductDocument>,
+    @InjectModel(Product.name)
+    private readonly productModel: Model<ProductDocument>,
   ) {}
 
   async create(dto: CreateOrderDto): Promise<ResponseOrderDto> {
@@ -29,7 +31,9 @@ export class OrderService {
     for (const item of dto.products) {
       const product = await this.productModel.findById(item.productId);
       if (!product || product.quantity < item.quantity) {
-        throw new BadRequestException(`Produto inválido ou estoque insuficiente: ${item.productId}`);
+        throw new BadRequestException(
+          `Produto inválido ou estoque insuficiente: ${item.productId}`,
+        );
       }
 
       const subtotal = product.price * item.quantity;
@@ -75,7 +79,7 @@ export class OrderService {
       .populate({ path: 'products', populate: { path: 'product' } })
       .populate('user');
 
-     if (!orders) {
+    if (!orders) {
       throw new BadRequestException('Pedidos não encontrados');
     }
 
