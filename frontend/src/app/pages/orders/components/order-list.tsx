@@ -1,7 +1,6 @@
-
-import { useState, useEffect } from "react"
-import OrderItem from "./order-item"
 import type { Order } from "@/app/interfaces/order"
+import { useEffect, useState } from "react"
+import OrderItem from "./order-item"
 
 interface OrderListProps {
     filter: string

@@ -1,6 +1,8 @@
-"use client"
 
-import { cn } from "@/lib/utils"
+
+import { login } from "@/app/api/apiService"
+import type { LoginFormData } from "@/app/interfaces/auth"
+import { useAuth } from "@/app/provider/authProvider"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -11,42 +13,40 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import type { LoginFormData } from "@/app/interfaces/auth"
-import { Link, useNavigate } from "react-router-dom";
-import { useForm, Controller } from "react-hook-form";
+import { cn } from "@/lib/utils"
+import { Controller, useForm } from "react-hook-form"
+import { Link, useNavigate } from "react-router-dom"
 import { toast } from "sonner"
-import { useAuth } from "@/app/provider/authProvider"
-import { login } from "@/app/api/apiService"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
 
-  const { control, handleSubmit, formState: { errors } } = useForm<LoginFormData>();
-  const navigate = useNavigate();
-  const { setToken } = useAuth();
+  const navigate = useNavigate()
+  const { setToken } = useAuth()
+  const { control, handleSubmit, formState: { errors } } = useForm<LoginFormData>()
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const response = await login(data);
+      const response = await login(data)
 
-      const { access_token, user } = response.data;
+      const { access_token, user } = response.data
 
-      setToken(access_token);
-      localStorage.setItem("user", JSON.stringify(user));
+      setToken(access_token)
+      localStorage.setItem("user", JSON.stringify(user))
 
       toast.success("Login realizado com sucesso!")
 
 
-      navigate("/home");
+      navigate("/home")
 
     } catch (error: any) {
       const message =
-        error?.response?.data?.message || error?.message || "Erro ao fazer login";
+        error?.response?.data?.message || error?.message || "Erro ao fazer login"
       toast.error(message)
     }
-  };
+  }
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -111,5 +111,5 @@ export function LoginForm({
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

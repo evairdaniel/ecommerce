@@ -1,28 +1,24 @@
-"use client"
-
-import type React from "react"
-
-import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { CheckCircle2, ChevronLeft, ChevronRight, Eye, EyeOff, Loader2, Upload, UserCircle } from "lucide-react"
-
+import { createProfile, createUser } from "@/app/api/apiService"
+import type { ProfileDto } from "@/app/interfaces/profile "
+import type { UserDto } from "@/app/interfaces/user"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Card, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Textarea } from "@/components/ui/textarea"
 import { cn, toBase64 } from "@/lib/utils"
-import type { ProfileDto } from "@/app/interfaces/profile "
-import { createProfile, createUser } from "@/app/api/apiService"
-import { toast } from "sonner"
-import type { UserDto } from "@/app/interfaces/user"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { CheckCircle2, ChevronLeft, ChevronRight, Eye, EyeOff, Loader2, Upload, UserCircle } from "lucide-react"
+import type React from "react"
+import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
+import { toast } from "sonner"
+import { z } from "zod"
 
 const formSchema = z.object({
     name: z
@@ -32,7 +28,7 @@ const formSchema = z.object({
     email: z.string().email({ message: "Email inválido" }),
     password: z
         .string()
-        .min(8, { message: "Senha deve ter pelo menos 6 caracteres" })
+        .min(6, { message: "Senha deve ter pelo menos 6 caracteres" })
         .regex(/[A-Z]/, { message: "Senha deve conter pelo menos uma letra maiúscula" })
         .regex(/[a-z]/, { message: "Senha deve conter pelo menos uma letra minúscula" })
         .regex(/[0-9]/, { message: "Senha deve conter pelo menos um número" }),
@@ -46,10 +42,11 @@ type FormValues = z.infer<typeof formSchema>
 
 export default function UserRegistrationForm() {
     const [activeStep, setActiveStep] = useState<string>("personal")
-    const [isSubmitting, setIsSubmitting] = useState(false)
-    const [showPassword, setShowPassword] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+    const [showPassword, setShowPassword] = useState<boolean>(false)
     const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
-    const [passwordStrength, setPasswordStrength] = useState(0)
+    const [passwordStrength, setPasswordStrength] = useState<number>(0)
+
     const navigate = useNavigate();
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
@@ -71,24 +68,20 @@ export default function UserRegistrationForm() {
 
         let strength = 0
 
-
         if (password.length >= 6) strength += 25
-
         if (/[A-Z]/.test(password)) strength += 25
-
         if (/[a-z]/.test(password)) strength += 25
-
         if (/[0-9]/.test(password)) strength += 25
 
         return strength
     }
 
 
-    useState(() => {
+    useEffect(() => {
         if (watchPassword) {
             setPasswordStrength(calculatePasswordStrength(watchPassword))
         }
-    })
+    }, [watchPassword]);
 
     async function onSubmit(values: FormValues) {
         try {
@@ -113,17 +106,16 @@ export default function UserRegistrationForm() {
 
             setTimeout(() => {
                 setIsSubmitting(false)
-
                 toast.success("Usuário criado com sucesso!")
                 form.reset()
                 setAvatarPreview(null)
                 setActiveStep("personal")
-                navigate('/login');
+                navigate('/login')
             }, 1500)
         } catch (error) {
-
-            toast.error("Erro ao criar usuário.");
+            toast.error("Erro ao criar usuário.")
             setIsSubmitting(false)
+            console.error("Erro ao criar usuário.", error)
         }
     }
 
@@ -333,7 +325,7 @@ export default function UserRegistrationForm() {
                                     <FormField
                                         control={form.control}
                                         name="avatar"
-                                        render={({ field }) => (
+                                        render={() => (
                                             <FormItem className="space-y-3">
                                                 <FormLabel className="text-center block">Avatar</FormLabel>
                                                 <FormControl>

@@ -1,29 +1,30 @@
-import { useEffect, useState } from "react";
-import Header from "./components/Header";
-import ProductList from "./components/ProductList";
-import { fetchProducts } from '../../api/apiService';
-import { Skeleton } from "@/components/ui/skeleton";
+import type { Product } from "@/app/interfaces/product"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useEffect, useState } from "react"
+import { fetchProducts } from '../../api/apiService'
+import Header from "./components/Header"
+import ProductList from "./components/ProductList"
 
 
 export default function HomePage() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState<Product[]>([])
+  const [loading, setLoading] = useState(true)
 
-const loadProducts = async () => {
-    setLoading(true);
+  const loadProducts = async () => {
+    setLoading(true)
     try {
-      const productList = await fetchProducts();
-      setProducts(productList);
+      const productList = await fetchProducts()
+      setProducts(productList)
     } catch (error) {
-      console.error('Erro ao carregar os produtos:', error);
+      console.error('Erro ao carregar os produtos:', error)
     } finally {
-      setLoading(false); 
+      setLoading(false)
     }
   };
 
   useEffect(() => {
-    loadProducts();
-  }, []);
+    loadProducts()
+  }, [])
 
   return (
     <div className="justify-center">
@@ -37,7 +38,7 @@ const loadProducts = async () => {
         </div>
       ) : (
         <div className=" justify-center items-center">
-          <ProductList products={products} />
+          <ProductList products={products.filter(prod => prod.quantity > 0)} />
         </div>
       )}
     </div>

@@ -1,18 +1,18 @@
-"use client"
+
 
 import type React from "react"
 
-import { useEffect, useState } from "react"
-import { Plus } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import ProductTable from "./product-table"
-import ProductDialog from "./product-dialog"
-import DeleteConfirmDialog from "./delete-confirm-dialog"
-import type { Product } from "@/app/interfaces/product"
 import { createProduct, deleteProduct, fetchProducts, updateProduct } from "@/app/api/apiService"
+import type { Product } from "@/app/interfaces/product"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Plus } from "lucide-react"
+import { useEffect, useState } from "react"
 import { toast } from "sonner"
+import DeleteConfirmDialog from "./delete-confirm-dialog"
+import ProductDialog from "./product-dialog"
+import ProductTable from "./product-table"
 
 export default function ProductManagement() {
 
@@ -26,12 +26,12 @@ export default function ProductManagement() {
     const [currentProduct, setCurrentProduct] = useState<Product | null>(null)
 
 
-    const filterProducts = () => {
+    const filterProducts = (q: string) => {
         let filtered = [...products]
 
 
-        if (searchQuery) {
-            const query = searchQuery.toLowerCase()
+        if (q) {
+            const query = q.toLowerCase()
             filtered = filtered.filter(
                 (product) =>
                     product.name.toLowerCase().includes(query) ||
@@ -46,37 +46,38 @@ export default function ProductManagement() {
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(e.target.value)
-        setTimeout(filterProducts, 300)
+        setTimeout(() => filterProducts(e.target.value), 300)
     }
 
 
 
     const loadProducts = async () => {
         try {
-            const productList = await fetchProducts();
-            setProducts(productList);
-            setFilteredProducts(productList);
+            const productList = await fetchProducts()
+            setProducts(productList)
+            setFilteredProducts(productList)
         } catch (error) {
-            console.error('Erro ao carregar os produtos:', error);
+            console.error('Erro ao carregar os produtos:', error)
         }
-    };
+    }
 
     useEffect(() => {
-        loadProducts();
-    }, []);
+        loadProducts()
+    }, [])
 
     const handleCreateProduct = async (product: Product) => {
 
         try {
-            await createProduct(product);
+            await createProduct(product)
             toast.success("Produto cadastrado com sucesso!")
 
 
-            loadProducts();
+            loadProducts()
             setIsCreateDialogOpen(false)
         } catch (error) {
-            toast.error("Erro ao cadastrar produto!");
+            toast.error("Erro ao cadastrar produto!")
             setIsCreateDialogOpen(false)
+            console.error("Erro ao cadastrar produto!", error)
         }
 
 
@@ -87,16 +88,17 @@ export default function ProductManagement() {
         try {
             const updatedProducts = products.map((product) => (product.id === updatedProduct.id ? updatedProduct : product))
 
-            await updateProduct(updatedProduct);
+            await updateProduct(updatedProduct)
             toast.success("Produto alterado com sucesso!")
             setProducts(updatedProducts)
             setFilteredProducts(updatedProducts)
             setIsEditDialogOpen(false)
             setCurrentProduct(null)
         } catch (error) {
-            toast.error("Erro ao alterar produto!");
+            toast.error("Erro ao alterar produto!")
             setIsEditDialogOpen(false)
             setCurrentProduct(null)
+            console.error("Erro ao alterar produto!", error)
         }
     }
 
@@ -107,16 +109,17 @@ export default function ProductManagement() {
 
             const updatedProducts = products.filter((product) => product.id !== currentProduct.id)
 
-            await deleteProduct(currentProduct.id);
+            await deleteProduct(currentProduct.id)
             toast.success("Produto excluído com sucesso")
             setProducts(updatedProducts)
             setFilteredProducts(updatedProducts)
             setIsDeleteDialogOpen(false)
             setCurrentProduct(null)
         } catch (error) {
-            toast.error("Erro ao excluir produto.");
+            toast.error("Erro ao excluir produto.")
             setIsDeleteDialogOpen(false)
             setCurrentProduct(null)
+            console.error("Erro ao excluir produto!", error)
         }
     }
 

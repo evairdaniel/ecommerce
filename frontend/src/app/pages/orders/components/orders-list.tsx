@@ -1,5 +1,3 @@
-"use client"
-
 import type { Order } from "@/app/interfaces/order"
 import OrderItem from "./order-item"
 

@@ -1,22 +1,21 @@
-"use client"
 
-import { useAuth } from "@/app/provider/authProvider";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { LogOut, PackagePlus, ShoppingBag, ShoppingCart, UserCog } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+
+import { useAuth } from "@/app/provider/authProvider"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { LogOut, PackagePlus, ShoppingBag, ShoppingCart, UserCog } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 export default function TopBar() {
-  const navigate = useNavigate();
-  const { token, setToken } = useAuth();
-  const user = JSON.parse(localStorage.getItem("user") || "null");
+  const navigate = useNavigate()
+  const { token, logout } = useAuth()
+  const user = JSON.parse(localStorage.getItem("user") || "null")
 
-  const handleLogin = () => navigate("/login");
+  const handleLogin = () => navigate("/login")
   const handleLogout = () => {
-    setToken(null);
-    localStorage.removeItem("user");
-  };
+    logout()
+  }
 
   return (
     <div className="p-4 flex items-center gap-4">
@@ -89,5 +88,5 @@ export default function TopBar() {
         </Button>
       )}
     </div>
-  );
+  )
 }

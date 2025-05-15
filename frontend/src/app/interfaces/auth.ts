@@ -1,21 +1,22 @@
-import type { ReactNode } from "react";
-import type { User } from "./user";
+import type { ReactNode } from "react"
+import type { User } from "./user"
 
 export interface LoginFormData {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 export interface LoginResponse {
- access_token: string;
-  user: User;
+  access_token: string
+  user: User
 }
 
 export interface AuthContextType {
-  token: string | null;
-  setToken: (token: string | null) => void;
+  token: string | null
+  setToken: (token: string | null) => void
+  logout: () => void
 }
 
 export interface AuthProviderProps {
-  children: ReactNode;
+  children: ReactNode
 }

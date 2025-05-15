@@ -1,6 +1,4 @@
-"use client"
-
-import UserRegistrationForm from "./componentes/user-registration-form"
+import UserRegistrationForm from "./componentes/user-registration-form";
 
 export default function RegisterPage() {
     return (

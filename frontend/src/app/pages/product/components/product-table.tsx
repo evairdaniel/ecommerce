@@ -1,7 +1,3 @@
-"use client"
-
-import { MoreHorizontal, ArrowUpDown, Edit, Trash2 } from "lucide-react"
-import { useState } from "react"
 import {
     type ColumnDef,
     type ColumnFiltersState,
@@ -13,12 +9,14 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
+import { ArrowUpDown, Edit, MoreHorizontal, Trash2 } from "lucide-react"
+import { useState } from "react"
 
+import type { Product } from "@/app/interfaces/product"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { formatCurrency } from "@/lib/utils"
-import type { Product } from "@/app/interfaces/product"
 
 interface ProductTableProps {
     products: Product[]
@@ -66,7 +64,7 @@ export default function ProductTable({ products, onEdit, onDelete }: ProductTabl
             },
             cell: ({ row }) => {
                 const price = Number.parseFloat(row.getValue("price"))
-                return <div className="text-right">{formatCurrency(price)}</div>
+                return <div className="text-right">{formatCurrency(price.toString())}</div>
             },
         },
         {

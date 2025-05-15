@@ -1,13 +1,13 @@
-"use client"
 
-import { useState } from "react"
-import { ChevronDown, ChevronUp, Package } from "lucide-react"
-import { formatCurrency } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
+
 import type { Order } from "@/app/interfaces/order"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { formatCurrency } from "@/lib/utils"
+import { ChevronDown, ChevronUp, Package } from "lucide-react"
+import { useState } from "react"
 
 interface OrderItemProps {
     order: Order
@@ -49,7 +49,7 @@ export default function OrderItem({ order }: OrderItemProps) {
                             Cliente: <span className="font-medium">{order.userName}</span>
                         </p>
                     </div>
-                    <p className="font-medium">{formatCurrency(order.total / 100)}</p>
+                    <p className="font-medium">{formatCurrency((order.total / 100).toString())}</p>
                 </div>
 
                 <Button
@@ -92,9 +92,9 @@ export default function OrderItem({ order }: OrderItemProps) {
                                             {order.products.map((product) => (
                                                 <TableRow key={product.productId}>
                                                     <TableCell className="font-medium">{product.productName}</TableCell>
-                                                    <TableCell className="text-right">{formatCurrency(product.unitPrice / 100)}</TableCell>
+                                                    <TableCell className="text-right">{formatCurrency((product.unitPrice / 100).toString())}</TableCell>
                                                     <TableCell className="text-right">{product.quantity}</TableCell>
-                                                    <TableCell className="text-right">{formatCurrency(product.total / 100)}</TableCell>
+                                                    <TableCell className="text-right">{formatCurrency((product.total / 100).toString())}</TableCell>
                                                 </TableRow>
                                             ))}
                                         </TableBody>
@@ -104,7 +104,7 @@ export default function OrderItem({ order }: OrderItemProps) {
 
                             <div className="pt-2 border-t flex justify-between font-medium">
                                 <span>Total</span>
-                                <span>{formatCurrency(order.total / 100)}</span>
+                                <span>{formatCurrency((order.total / 100).toString())}</span>
                             </div>
                         </div>
                     </CardContent>

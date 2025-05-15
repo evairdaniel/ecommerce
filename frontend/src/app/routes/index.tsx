@@ -1,12 +1,12 @@
-import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
-import { ProtectedRoute } from "./ProtectedRoute";
-import HomePage from "../pages/home";
-import LoginPage from "../pages/login";
-import ProfilePage from "../pages/profile";
-import CartPage from "../pages/cart";
-import OrdersPage from "../pages/orders";
-import RegisterPage from "../pages/register";
-import ProductPage from "../pages/product";
+import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom"
+import CartPage from "../pages/cart"
+import HomePage from "../pages/home"
+import LoginPage from "../pages/login"
+import OrdersPage from "../pages/orders"
+import ProductPage from "../pages/product"
+import ProfilePage from "../pages/profile"
+import RegisterPage from "../pages/register"
+import { ProtectedRoute } from "./ProtectedRoute"
 
 const Routes = () => {
 
@@ -76,11 +76,11 @@ const Routes = () => {
       path: "*",
       element: <div>Página não encontrada</div>
     }
-  ];
+  ]
 
 
-  const router = createBrowserRouter(routes);
-  return <RouterProvider router={router} />;
-};
+  const router = createBrowserRouter(routes)
+  return <RouterProvider router={router} />
+}
 
-export default Routes;
+export default Routes

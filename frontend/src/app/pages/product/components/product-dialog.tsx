@@ -1,4 +1,4 @@
-"use client"
+
 
 import { useEffect } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -16,6 +16,7 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import type { Product } from "@/app/interfaces/product"
+import { formatCurrency } from "@/lib/utils"
 
 const formSchema = z.object({
     id: z.string().optional(),
@@ -99,9 +100,16 @@ export default function ProductDialog({ open, onOpenChange, onSubmit, title, pro
                                 name="price"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Preço (R$)</FormLabel>
+                                        <FormLabel>Preço</FormLabel>
                                         <FormControl>
-                                            <Input type="number" step="0.01" min="0" {...field} />
+                                            <Input
+                                                value={formatCurrency(field.value?.toString() || '0,00')}
+                                                inputMode="numeric"
+                                                onChange={(e) => {
+                                                    const raw = e.target.value;
+                                                    field.onChange(raw);
+                                                }}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

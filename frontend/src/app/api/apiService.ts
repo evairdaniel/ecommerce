@@ -1,7 +1,7 @@
 import type { CreateOrderDto } from '../interfaces/order';
 import type { Product } from '../interfaces/product';
 import type { ProfileDto, UpdateProfileDto } from '../interfaces/profile ';
-import type { UpdateUserDto, User, UserDto } from '../interfaces/user';
+import type { UpdateUserDto, UserDto } from '../interfaces/user';
 import { api } from './axios';
 
 export const login = async (data: { email: string; password: string }) => {

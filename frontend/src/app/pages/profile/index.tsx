@@ -1,30 +1,27 @@
-"use client"
-
 import type React from "react"
 
-import { useEffect, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { CheckCircle2, ChevronLeft, ChevronRight, Eye, EyeOff, Loader2, Upload, UserCircle } from "lucide-react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { CheckCircle2, ChevronLeft, ChevronRight, Eye, EyeOff, Loader2, Upload, UserCircle } from "lucide-react"
 
+import { updateProfile, updateUser } from "@/app/api/apiService"
+import type { UpdateProfileDto } from "@/app/interfaces/profile "
+import type { UpdateUserDto } from "@/app/interfaces/user"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Card, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Textarea } from "@/components/ui/textarea"
 import { cn, toBase64 } from "@/lib/utils"
-import type { UpdateProfileDto } from "@/app/interfaces/profile "
-import { toast } from "sonner"
 import { useNavigate } from "react-router-dom"
+import { toast } from "sonner"
 import Header from "../home/components/Header"
-import { useAuth } from "@/app/provider/authProvider"
-import { updateProfile, updateUser } from "@/app/api/apiService"
-import type { UpdateUserDto } from "@/app/interfaces/user"
 
 const formSchema = z.object({
   name: z
@@ -61,7 +58,6 @@ type FormValues = z.infer<typeof formSchema>
 
 export default function ProfilePage() {
 
-  const { setToken } = useAuth();
   const [activeStep, setActiveStep] = useState<string>("personal")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
@@ -148,9 +144,9 @@ export default function ProfilePage() {
         navigate('/login');
       }, 1500)
     } catch (error) {
-
       toast.error("Erro ao alterar usuário.");
       setIsSubmitting(false)
+      console.error("Erro ao alterar usuário.", error)
     }
   }
 
@@ -364,7 +360,7 @@ export default function ProfilePage() {
                         <FormField
                           control={form.control}
                           name="avatar"
-                          render={({ field }) => (
+                          render={() => (
                             <FormItem className="space-y-3">
                               <FormLabel className="text-center block">Avatar</FormLabel>
                               <FormControl>

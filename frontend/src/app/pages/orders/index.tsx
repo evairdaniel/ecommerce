@@ -1,19 +1,16 @@
-import { Search } from "lucide-react"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import OrdersList from "./components/orders-list"
-import type { Order } from "@/app/interfaces/order"
-import { useEffect, useState } from "react"
 import { fetchOrders } from "@/app/api/apiService"
+import type { Order } from "@/app/interfaces/order"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Search } from "lucide-react"
+import { useEffect, useState } from "react"
 import Header from "../home/components/Header"
-import { useAuth } from "@/app/provider/authProvider"
+import OrdersList from "./components/orders-list"
 
 export default function OrdersPage() {
 
     const [orders, setOrders] = useState<Order[]>([])
     const [filter, setFilter] = useState<Order[]>([])
-
-    const { setToken } = useAuth();
     const user = JSON.parse(localStorage.getItem("user") || "null");
 
     const loadOrders = async () => {
@@ -22,7 +19,7 @@ export default function OrdersPage() {
             setOrders(orders);
             setFilter(orders);
         } catch (error) {
-            console.error('Erro ao carregarpedidos:', error);
+            console.error('Erro ao carregar pedidos:', error);
         }
     };
 
@@ -39,7 +36,8 @@ export default function OrdersPage() {
         const filtered = orders.filter(order =>
             order.products.some(product =>
                 product.productName.toLowerCase().includes(filterValue.toLowerCase())
-            )
+
+            ) || order.orderId.toLowerCase().includes(filterValue.toLowerCase())
         );
 
         setFilter(filtered);

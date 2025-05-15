@@ -1,26 +1,24 @@
-import FallbackImage from "@/components/FallbackImage";
+import { createOrder } from "@/app/api/apiService"
+import type { CreateOrderDto } from "@/app/interfaces/order"
+import { useCart } from "@/app/provider/cartProvider"
+import FallbackImage from "@/components/FallbackImage"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react"
-import { Link, useNavigate } from "react-router-dom";
-import Header from "../home/components/Header";
-import { useCart } from "@/app/provider/cartProvider";
-import { toast } from "sonner";
-import { createOrder } from "@/app/api/apiService";
-import type { CreateOrderDto } from "@/app/interfaces/order";
-import { useAuth } from "@/app/provider/authProvider";
+import { Link, useNavigate } from "react-router-dom"
+import { toast } from "sonner"
+import Header from "../home/components/Header"
 
 export default function CartPage() {
-  const { setToken } = useAuth();
   const navigate = useNavigate();
   const { products, removeProduct, updateProductQuantity } = useCart();
 
-  function calcularSubtotal() {
+  const calcularSubtotal = () => {
     return products.reduce((total, product) => total + product.price * product.quantity, 0)
   }
 
-  function calcularTotal() {
+  const calcularTotal = () => {
     return calcularSubtotal()
   }
   const handleFinalizeOrder = async () => {
@@ -34,13 +32,14 @@ export default function CartPage() {
           productId: p.id,
           quantity: p.quantity,
         })),
-      };
-      await createOrder(orderPayload);
-      toast.success("Pedido realizado sucesso!");
-      localStorage.removeItem("cartProducts");
-      navigate('/home');
+      }
+      await createOrder(orderPayload)
+      toast.success("Pedido realizado sucesso!")
+      localStorage.removeItem("cartProducts")
+      navigate('/home')
     } catch (error) {
-      toast.error("Erro ao alterar senha.");
+      toast.error("Erro ao realizar pedido.")
+      console.error("rro ao realizar pedido.", error)
     }
   }
   return (
