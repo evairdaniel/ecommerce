@@ -90,7 +90,7 @@ docker-compose up --build
 - [ ] **Integração com serviços externos (ex: pagamentos, envio de e-mail, etc)**
 - [ ] **PWA Support para o frontend**
 - [ ] **Separação de ambientes (dev/staging/prod)**
-- [ ] **Linkar produto com vendedor**
+- [ ] **Vincular produto com vendedor**
 - [ ] **Cadastro de produto completo, como img, categoria, cor, variação e etc**
 - [ ] **Buscar personalizadas**
 - [ ] **Relatórios**
