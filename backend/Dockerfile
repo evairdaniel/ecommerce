@@ -3,7 +3,7 @@ FROM node:20 AS builder
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+RUN npm install --force
 
 COPY . .
 RUN npm run build
@@ -14,8 +14,8 @@ WORKDIR /app
 
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package*.json ./
-
-RUN npm install --only=production --legacy-peer-deps
+COPY .env .env
+RUN npm install --only=production --force
 
 EXPOSE 3000
 CMD ["node", "dist/main"]

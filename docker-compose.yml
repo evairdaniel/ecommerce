@@ -1,4 +1,14 @@
 services:
+  app:
+    build: ./backend/
+    container_name: nestjs_app
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
   mongodb:
     image: mongo:latest
     container_name: mongodb
@@ -8,3 +18,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root123
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
