@@ -34,6 +34,8 @@ yarn start:dev
 
 A API estará disponível em: `http://localhost:3000/api`
 
+> ⚠️ Certifique-se de que o backend esteja configurado para conectar com o MongoDB no endereço correto (ex: via `.env`)
+
 ### 2. Frontend (Vite)
 
 ```bash
